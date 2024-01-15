@@ -18,6 +18,25 @@ Preconditions, postconditions and invariants are different ways to express requi
 
 ## How To
 
+### Conditions
+To write your expectations on the code, you need to either use *expressions* or *conditions".
+
+There exists some functions in the library that let you directly write an *expression* that evaluate into a `bool`. For example if you want to check that a variable `x`of type `int` is positive, you will simply write `x > 0`.
+
+Another possibility is to use a *condition*. The type `Condition` is simply defined as a function that accept a variable of a given type and that returns an error if the condition is not fulfilled.
+```go
+type Condition[T any] func(T) error
+```
+
+Although it might be a little bit more work than just writing an *expression*, a *condition* can help you encapsulate complex conditions into a more readable format. For example, you could create a condition `isValidEmail` that you can apply on a string containing an email. Using the libary will see in the code:
+```go
+err := contract.RequiresThat(email, isValidEmail).ErrorOnFailure()
+```
+*Conditions* can also be combined:
+```go
+err := contract.RequiresThat(product, isWellDesigned.And(isNotTooExpensive)).ErrorOnFailure()
+```
+
 ### Imposing a Precondition
 If you want to check requirement use the `Requires` function.
 ```go
@@ -90,7 +109,7 @@ defer Immutable(&a).AssertVerified(t)
 defer Immutable(&a).AssertViolated(t)
 ```
 
-# Reference
+# References
 - [Microsoft's code contract library](https://learn.microsoft.com/en-us/dotnet/framework/debug-trace-profile/code-contracts)
 - Reusable Code Contract Helpers described in *Patterns, Principles, and Practices of Domain-Driven Design*, Millett, Tune, 2015 p.343
 - [Terraform's validation](https://developer.hashicorp.com/terraform/language/expressions/custom-conditions)

@@ -1,4 +1,4 @@
-module github.com/grandper/specification
+module github.com/grandper/go-contract
 
 go 1.19
 
