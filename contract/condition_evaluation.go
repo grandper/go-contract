@@ -34,14 +34,14 @@ func (c ConditionEvaluation) Unfulfilled() bool {
 	return c.err != nil
 }
 
-// PanicOnFailure will panic if the condition is not fulfilled.
+// PanicOnFailure will panic if the condition is unfulfilled.
 func (c ConditionEvaluation) PanicOnFailure() {
 	if c.Unfulfilled() {
 		panic(c.err)
 	}
 }
 
-// ErrorOnFailure will return an error if the condition is not fulfilled.
+// ErrorOnFailure will return an error if the condition is unfulfilled.
 func (c ConditionEvaluation) ErrorOnFailure() error {
 	if c.Unfulfilled() {
 		return c.err
@@ -49,19 +49,19 @@ func (c ConditionEvaluation) ErrorOnFailure() error {
 	return nil
 }
 
-// LogOnFailure will log the error if the condition is not fulfilled.
+// LogOnFailure will log the error if the condition is unfulfilled.
 func (c ConditionEvaluation) LogOnFailure() {
 	if c.Unfulfilled() {
 		log.Println(c.err)
 	}
 }
 
-// AssertFulfilled asserts that the condition is fullfilled
+// AssertFulfilled asserts that the condition is fulfilled.
 func (c ConditionEvaluation) AssertFulfilled(t *testing.T) {
 	assert.True(t, c.Fulfilled(), c.err)
 }
 
-// AssertUnulfilled asserts that the condition is fullfilled
+// AssertUnulfilled asserts that the condition is unfulfilled.
 func (c ConditionEvaluation) AssertUnfulfilled(t *testing.T) {
 	assert.True(t, c.Unfulfilled(), c.err)
 }

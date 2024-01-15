@@ -8,38 +8,38 @@ import (
 )
 
 func TestCondition(t *testing.T) {
-	fulfilledCondition := Condition[int](func(i int) error {
+	isFulfilled := Condition[int](func(i int) error {
 		return nil
 	})
-	unfulfilledCondition := Condition[int](func(i int) error {
+	isUnfulfilled := Condition[int](func(i int) error {
 		return errors.New("the condition is unfulfilled")
 	})
 
 	t.Run("combined with other condition", func(t *testing.T) {
-		condition := fulfilledCondition.And(fulfilledCondition)
+		condition := isFulfilled.And(isFulfilled)
 		assert.NoError(t, condition(1))
 
-		condition = fulfilledCondition.And(unfulfilledCondition)
+		condition = isFulfilled.And(isUnfulfilled)
 		assert.Error(t, condition(1))
 
-		condition = unfulfilledCondition.And(fulfilledCondition)
+		condition = isUnfulfilled.And(isFulfilled)
 		assert.Error(t, condition(1))
 
-		condition = unfulfilledCondition.And(unfulfilledCondition)
+		condition = isUnfulfilled.And(isUnfulfilled)
 		assert.Error(t, condition(1))
 	})
 
 	t.Run("have an alternative condition", func(t *testing.T) {
-		condition := fulfilledCondition.Or(fulfilledCondition)
+		condition := isFulfilled.Or(isFulfilled)
 		assert.NoError(t, condition(1))
 
-		condition = fulfilledCondition.Or(unfulfilledCondition)
+		condition = isFulfilled.Or(isUnfulfilled)
 		assert.NoError(t, condition(1))
 
-		condition = unfulfilledCondition.Or(fulfilledCondition)
+		condition = isUnfulfilled.Or(isFulfilled)
 		assert.NoError(t, condition(1))
 
-		condition = unfulfilledCondition.Or(unfulfilledCondition)
+		condition = isUnfulfilled.Or(isUnfulfilled)
 		assert.Error(t, condition(1))
 	})
 }
