@@ -27,25 +27,32 @@ func TestInvariant(t *testing.T) {
 	})
 
 	t.Run("should log an error if the invariant is violated", func(t *testing.T) {
-
+		assertLogContains(t, "violated invariant", func() {
+			a := 2
+			defer Invariant(&a, isPositive).LogOnViolation()
+			a = -1
+		})
 	})
 
 	t.Run("should log nothing if the invariant is verified", func(t *testing.T) {
-
+		assertNoLogs(t, func() {
+			a := 2
+			defer Invariant(&a, isPositive).LogOnViolation()
+		})
 	})
 
-	t.Run("should provide utility to test violation", func (t *testing.T) {
+	t.Run("should provide utility to test violation", func(t *testing.T) {
 		a := 2
 		defer Invariant(&a, isPositive).AssertViolated(t)
 		a = -1
 	})
 
-	t.Run("should provide utility to test that no violation happen", func (t *testing.T) {
+	t.Run("should provide utility to test that no violation happen", func(t *testing.T) {
 		a := 2
 		defer Invariant(&a, isPositive).AssertVerified(t)
 	})
 
-	t.Run("should check immutability for", func (t *testing.T) {
+	t.Run("should check immutability for", func(t *testing.T) {
 		t.Run("types", func(t *testing.T) {
 			a := 2
 			defer Immutable(&a).AssertVerified(t)
