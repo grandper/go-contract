@@ -69,5 +69,19 @@ func TestInvariant(t *testing.T) {
 			defer Immutable(&b).AssertViolated(t)
 			b = -1
 		})
+		t.Run("struct with unexported fields", func(t *testing.T) {
+			type TestStruct struct{
+				B int
+				b int
+			}
+			a1 := TestStruct{}
+			defer Immutable(&a1).AssertViolated(t)
+			a1.b = -1
+			a2 := TestStruct{}
+			defer Immutable(&a2).AssertViolated(t)
+			a2.B = -1
+			a3 := TestStruct{}
+			defer Immutable(&a3).AssertVerified(t)
+		})
 	})
 }
