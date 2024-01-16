@@ -108,6 +108,7 @@ if err := contract.RequiresThat(variable1,
   ErrorOnFailure(); err != nil {
   return err
 }
+```
 
 ## Testing
 Of course you may want to use preconditions, postconditions, and invariants in your tests. The library includes method to directly write expectation and asserting within your code.
