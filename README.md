@@ -86,6 +86,29 @@ defer Immutable(&a).AssertVerified(t)
 #### Note
 Although you technically can check for immutability directly in your code, it's better to ensure the immutability of your code within your tests.
 
+### Chaining
+You might be wondering what is the benefit of this over just wrapping the email validation using a simple function. When you use function you get to actually chain all the requirement on the different variable and avoid a long list of `if` statements:
+```go
+// This is what a typical verification code looks like.
+if !check1(variable) {
+  return fmt.Errorf("check 1 failed")
+}
+if !check2(variable) {
+  return fmt.Errorf("check 2 failed")
+}
+if !check3(variable) {
+  return fmt.Errorf("check 2 failed")
+}
+
+// This is what you can write instead
+if err := contract.RequiresThat(variable1,   
+  hasProperty1.
+  And(hasProperty2).
+  And(hasProperty2)).
+  ErrorOnFailure(); err != nil {
+  return err
+}
+
 ## Testing
 Of course you may want to use preconditions, postconditions, and invariants in your tests. The library includes method to directly write expectation and asserting within your code.
 
