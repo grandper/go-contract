@@ -37,13 +37,13 @@ func (i invariant) LogOnViolation() {
 }
 
 // AssertViolated will assert that the invariant is violated.
-func (i invariant) AssertViolated(t *testing.T) {
-	i.checkFunc().AssertUnfulfilled(t)
+func (i invariant) AssertViolated(t *testing.T) bool {
+	return i.checkFunc().AssertUnfulfilled(t)
 }
 
 // AssertVerfified will assert that the invariant is verified.
-func (i invariant) AssertVerified(t *testing.T) {
-	i.checkFunc().AssertFulfilled(t)
+func (i invariant) AssertVerified(t *testing.T) bool {
+	return i.checkFunc().AssertFulfilled(t)
 }
 
 // Immutable creates an invariant that check that the value is immutable.

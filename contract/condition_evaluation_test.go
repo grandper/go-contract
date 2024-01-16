@@ -51,11 +51,15 @@ func TestConditionEvaluation(t *testing.T) {
 	})
 
 	t.Run("should assert if the condition is fulfilled", func(t *testing.T) {
-
+		mockT := new(testing.T)
+		assert.True(t, FulfilledfulConditionEvaluation.AssertFulfilled(mockT))
+		assert.False(t, unfulfilledConditionEvaluation.AssertFulfilled(mockT))
 	})
 
 	t.Run("should assert if the condition is unfulfilled", func(t *testing.T) {
-
+		mockT := new(testing.T)
+		assert.True(t, unfulfilledConditionEvaluation.AssertUnfulfilled(mockT))
+		assert.False(t, FulfilledfulConditionEvaluation.AssertUnfulfilled(mockT))
 	})
 }
 

@@ -42,14 +42,23 @@ func TestInvariant(t *testing.T) {
 	})
 
 	t.Run("should provide utility to test violation", func(t *testing.T) {
+		mockT := new(testing.T)
 		a := 2
-		defer Invariant(&a, isPositive).AssertViolated(t)
+		invariant1 := Invariant(&a, isPositive)
+		defer func() {assert.True(t, invariant1.AssertViolated(mockT))}()
 		a = -1
+		invariant2 := Invariant(&a, isPositive)
+		defer func() {assert.False(t, invariant2.AssertViolated(mockT))}()
 	})
 
 	t.Run("should provide utility to test that no violation happen", func(t *testing.T) {
+		mockT := new(testing.T)
 		a := 2
-		defer Invariant(&a, isPositive).AssertVerified(t)
+		invariant1 := Invariant(&a, isPositive)
+		defer func() {assert.False(t, invariant1.AssertVerified(mockT))}()
+		a = -1
+		invariant2 := Invariant(&a, isPositive)
+		defer func() {assert.True(t, invariant2.AssertVerified(mockT))}()
 	})
 
 	t.Run("should check immutability for", func(t *testing.T) {

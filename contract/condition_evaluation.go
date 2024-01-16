@@ -57,11 +57,11 @@ func (c ConditionEvaluation) LogOnFailure() {
 }
 
 // AssertFulfilled asserts that the condition is fulfilled.
-func (c ConditionEvaluation) AssertFulfilled(t *testing.T) {
-	assert.True(t, c.Fulfilled(), c.err)
+func (c ConditionEvaluation) AssertFulfilled(t *testing.T) bool {
+	return assert.True(t, c.Fulfilled(), c.err)
 }
 
 // AssertUnulfilled asserts that the condition is unfulfilled.
-func (c ConditionEvaluation) AssertUnfulfilled(t *testing.T) {
-	assert.True(t, c.Unfulfilled(), c.err)
+func (c ConditionEvaluation) AssertUnfulfilled(t *testing.T) bool {
+	return assert.True(t, c.Unfulfilled(), c.err)
 }
